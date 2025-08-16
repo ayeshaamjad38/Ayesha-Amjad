@@ -1,0 +1,82 @@
+<!-- sections/product-grid-custom.liquid -->
+<link rel="stylesheet" href="{{ 'custom-sections.css' | asset_url }}">
+<script>window.CE_SHOP_CURRENCY = "{{ shop.currency }}";</script>
+<script src="{{ 'custom-sections.js' | asset_url }}" defer></script>
+
+<section class="ce-grid" aria-label="Product grid" data-auto-add-handle="{{ section.settings.auto_add_handle }}">
+  <div class="ce-grid__inner">
+    {% if section.settings.grid_title != blank %}
+      <h2 class="ce-grid__heading">{{ section.settings.grid_title }}</h2>
+    {% endif %}
+
+    <div class="ce-grid__items">
+      {% for block in section.blocks %}
+        {% assign product = block.settings.product %}
+        {% if product %}
+          <div class="ce-card" data-product-handle="{{ product.handle }}">
+            <button class="ce-card__thumb js-qv-open" type="button" data-handle="{{ product.handle }}" aria-label="Open quick view: {{ product.title }}">
+              <img src="{{ product.featured_image | img_url: '600x' }}" alt="{{ product.title | escape }}">
+            </button>
+
+            <div class="ce-card__meta">
+              <h3 class="ce-card__title">{{ product.title }}</h3>
+              <div class="ce-card__price">{{ product.price | money }}</div>
+              <button class="btn btn--outline js-qv-open" type="button" data-handle="{{ product.handle }}">Quick view</button>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Quickview Popup -->
+  <div id="ce-quickview" class="ce-quickview" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="ce-quickview__backdrop" data-action="close"></div>
+
+    <div class="ce-quickview__panel" role="document">
+      <button class="ce-quickview__close" data-action="close" aria-label="Close quick view">✕</button>
+
+      <div class="ce-quickview__content">
+        <div class="ce-quickview__left">
+          <img id="ce-qv-image" src="" alt="">
+        </div>
+
+        <div class="ce-quickview__right">
+          <h3 id="ce-qv-title"></h3>
+          <div id="ce-qv-price" class="ce-qv-price"></div>
+          <div id="ce-qv-desc" class="ce-qv-desc"></div>
+
+          <label for="ce-qv-variants">Options</label>
+          <select id="ce-qv-variants"></select>
+
+          <div class="ce-qv-actions">
+            <button id="ce-qv-add" class="btn btn--primary" type="button">Add to cart</button>
+          </div>
+
+          <div id="ce-qv-message" class="ce-qv-message" role="status" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "CE: Product Grid + Quickview",
+  "settings": [
+    { "type": "text", "id": "grid_title", "label": "Grid title", "default": "Featured Products" },
+    { "type": "text", "id": "auto_add_handle", "label": "Handle of product to auto-add (when Black + Medium selected)", "default": "soft-winter-jacket" }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Select product" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [{ "name": "Product Grid", "category": "Custom" }]
+}
+{% endschema %}
