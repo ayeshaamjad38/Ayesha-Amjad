@@ -1,0 +1,45 @@
+<!-- sections/banner-custom.liquid -->
+<link rel="stylesheet" href="{{ 'custom-sections.css' | asset_url }}">
+
+<section class="ce-banner" aria-label="Hero banner">
+  <div class="ce-banner__inner">
+    <div class="ce-banner__left">
+      <h1 class="ce-banner__title">{{ section.settings.banner_title }}</h1>
+      <p class="ce-banner__subtitle">{{ section.settings.banner_subtitle }}</p>
+
+      <div class="ce-banner__cta">
+        {% if section.settings.button1_text != blank %}
+          <a class="btn btn--primary ce-anim-btn" href="{{ section.settings.button1_url }}">{{ section.settings.button1_text }}</a>
+        {% endif %}
+
+        {% if section.settings.button2_text != blank %}
+          <a class="btn btn--ghost ce-anim-btn" href="{{ section.settings.button2_url }}">{{ section.settings.button2_text }}</a>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if section.settings.banner_image %}
+      <div class="ce-banner__media">
+        <img src="{{ section.settings.banner_image | img_url: '1600x' }}" alt="{{ section.settings.banner_image_alt | escape }}">
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "CE: Custom Banner",
+  "settings": [
+    { "type": "text", "id": "banner_title", "label": "Title", "default": "Your Title Here" },
+    { "type": "text", "id": "banner_subtitle", "label": "Subtitle", "default": "Subtitle / short description" },
+    { "type": "image_picker", "id": "banner_image", "label": "Banner image" },
+    { "type": "text", "id": "banner_image_alt", "label": "Banner image alt text", "default": "Banner image" },
+    { "type": "text", "id": "button1_text", "label": "Primary button text", "default": "Shop Now" },
+    { "type": "url", "id": "button1_url", "label": "Primary button URL", "default": "#" },
+    { "type": "text", "id": "button2_text", "label": "Secondary button text", "default": "Learn More" },
+    { "type": "url", "id": "button2_url", "label": "Secondary button URL", "default": "#" }
+  ],
+  "presets": [{ "name": "Custom Banner", "category": "Custom" }]
+}
+{% endschema %}
+s
